@@ -1,0 +1,66 @@
+﻿@model BaiTap8
+
+
+@if (User.IsInRole(SD.Role_Admin))
+{
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <h2>Hiệu Chỉnh Sản Phẩm</h2>
+    <hr />
+    <div class="form-group">
+        <label>Số Phiếu Nhập Kho</label>
+        <input asp-for="Bai7.So_Phieu_Nhap_Kho" class="form-control" readonly/>
+        <span asp-validation-for="Bai7.So_Phieu_Nhap_Kho" class="text-danger"></span>
+    </div>
+    <div class="form-group pb-2">
+        <label>Kho</label>
+        <select asp-for="Bai7.Kho_ID" asp-items="@ViewBag.KhoList" class="form-control">
+            <option disabled selected>==Chọn Kho==</option>
+        </select>
+        <span asp-validation-for="Bai7.Kho_ID" class="text-danger"></span>
+    </div>
+    <div class="form-group pb-2">
+        <label>Nhà cung cấp</label>
+        <select asp-for="Bai7.NCC_ID" asp-items="@ViewBag.NCCList" class="form-control">
+            <option disabled selected>==Chọn nhà cung cấp==</option>
+        </select>
+        <span asp-validation-for="Bai7.NCC_ID" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Ngày Nhập</label>
+        <input asp-for="Bai7.Ngay_Nhap_Kho" class="form-control" />
+        <span asp-validation-for="Bai7.Ngay_Nhap_Kho" class="text-danger"></span>
+    </div>
+    <div class="form-group pb-2">
+        <label> Sản Phẩm</label>
+        <select asp-for="Bai7_2.San_Pham_ID" asp-items="@ViewBag.SPList" class="form-control">
+            <option disabled selected>==Chọn loại sản phẩm==</option>
+        </select>
+        <span asp-validation-for="Bai7_2.San_Pham_ID" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Số Lượng</label>
+        <input asp-for="Bai7_2.SL_Nhap" class="form-control" />
+        <span asp-validation-for="Bai7_2.SL_Nhap" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Đơn giá</label>
+        <input asp-for="Bai7_2.Don_Gia_Nhap" class="form-control" />
+        <span asp-validation-for="Bai7_2.Don_Gia_Nhap" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Ghi Chú</label>
+        <input asp-for="Bai7.Ghi_Chu" class="form-control" />
+        <span asp-validation-for="Bai7.Ghi_Chu" class="text-danger"></span>
+    </div>
+    <input type="hidden" name="bai7Id" value="@Model.Bai7.Id" />
+    <input type="hidden" name="bai7_2Id" value="@Model.Bai7_2.Id" />
+
+    <button type="submit" class="btn btn-primary"> Edit </button>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>
+}
+else
+{
+    <h2>Bạn không có quyền truy cập vào trang này.</h2>
+}

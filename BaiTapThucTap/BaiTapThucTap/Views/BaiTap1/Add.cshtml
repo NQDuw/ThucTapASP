@@ -1,0 +1,25 @@
+﻿@model BaiTap1
+
+@if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+{
+        <form asp-action="Add" method="post">
+            <h2>Thêm Đơn Vị Tính</h2>
+            <hr />
+            <div class="form-group">
+                <label>Tên Đơn Vị Tính</label>
+                <input asp-for="Ten_Don_Vi_Tinh" class="form-control" />
+                <span asp-validation-for="Ten_Don_Vi_Tinh" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Ghi Chú</label>
+                <input asp-for="Ghi_Chu" class="form-control" />
+                <span asp-validation-for="Ghi_Chu" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary"> Save </button>
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </form>
+}
+else
+{
+    <h2>Bạn không có quyền truy cập vào trang này.</h2>
+}

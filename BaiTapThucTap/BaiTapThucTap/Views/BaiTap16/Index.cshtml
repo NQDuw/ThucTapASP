@@ -1,0 +1,58 @@
+﻿@model BaiTapThucTap.Controllers.BaiTap16Controller.CombinedViewModel
+<form asp-action="Index" method="post">
+    <hr />
+    <div class="form-group">
+        <label>Nhập Ngày Bắt Đầu</label>
+        <input asp-for="@Model.SearchModel.NgayBatDau" class="form-control" type="date" />
+        <span asp-validation-for="@Model.SearchModel.NgayBatDau" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Nhập Ngày Kết Thúc</label>
+        <input asp-for="@Model.SearchModel.NgayKetThuc" class="form-control" type="date" />
+        <span asp-validation-for="@Model.SearchModel.NgayKetThuc" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+    <br>
+    <br>
+</form>
+
+@if (Model.ListSearch != null && Model.ListSearch.Any())
+{
+    <div class="text-center">
+        <h2>Báo cáo xuất kho</h2>
+    </div>
+    <br>
+    <div id="Search">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Ngày xuất</th>
+                    <th>Số phiếu xuất</th>
+                    <th>Mã Sản Phẩm</th>
+                    <th>Tên Sản Phẩm</th>
+                    <th>Số Lượng</th>
+                    <th>Đơn Giá</th>
+                    <th>Trị Giá</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var x in Model.ListSearch)
+                {
+                    <tr>
+                        <td>@(x.Bai11?.Ngay_Xuat_Kho)</td>
+                        <td>@(x.Bai11?.So_Phieu_Xuat_Kho)</td>
+                        <td>@(x.Bai11_2?.sanpham?.Ma_San_Pham ?? "N/A")</td>
+                        <td>@(x.Bai11_2?.sanpham?.Ten_San_Pham ?? "N/A")</td>
+                        <td>@string.Format("{0:#,##0}", (x.Bai11_2?.SL_Xuat ?? 0))</td>
+                        <td>@string.Format("{0:#,##0}", (x.Bai11_2?.Don_Gia_Xuat ?? 0))</td>
+                        <td>@string.Format("{0:#,##0}", (x.TriGia))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <h2>Không có dữ liệu tìm kiếm nào.</h2>
+}

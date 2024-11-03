@@ -1,0 +1,128 @@
+﻿@model List<ViewModelBai7>
+<partial name="_Notification" />
+<div class="row">
+    <div class="col-md-6">
+        <h2>LIST nhập kho</h2>
+
+    </div>
+    <div class="col-md-6 text-right">
+        <a asp-action="Add" class="btn btn-primary">
+            <i class="bi bi-plus-circle-fill"></i> Add New
+        </a>
+        <a class="btn btn-success" asp-area="" asp-controller="BaiTap8" asp-action="Index">Edit</a>
+        <br>
+    </div>
+</div>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Số Phiếu Nhập</th>
+            <th>Sản Phẩm</th>
+            <th>Số Lượng</th>
+            <th>Đơn Giá</th>
+            <th>Ngày Nhập Kho</th>
+            <th>Kho</th>
+            <th>Nhà Cung Cắp</th>
+            <th>Ghi Chú</th>
+            <th> Action </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var x in Model)
+        {
+            <tr>
+                <td>@(x.Bai7?.So_Phieu_Nhap_Kho ?? "N/A")</td>
+                <td>@(x.Bai7_2?.sanpham?.Ten_San_Pham ?? "N/A")</td>
+                <td>@string.Format("{0:#,##0}", (x.Bai7_2?.SL_Nhap ?? 0))</td>
+                <td>@string.Format("{0:#,##0}", (x.Bai7_2?.Don_Gia_Nhap ?? 0))</td>
+                <td>@(x.Bai7?.Ngay_Nhap_Kho.ToShortDateString() ?? "N/A")</td>
+                <td>@(x.Bai7?.Kho?.Ten_Kho ?? "N/A")</td>
+                <td>@(x.Bai7?.NCC?.Ten_NCC ?? "N/A")</td>
+                <td>@(x.Bai7?.Ghi_Chu ?? "N/A")</td>
+                <td>
+                    <a asp-action="Delete" asp-route-bai7Id="@x.Bai7.Id" asp-route-bai7_2Id="@x.Bai7_2.Id" class="btn btn-danger">Delete</a>
+                    <a asp-controller="BaiTap9" asp-route-bai7Id="@x.Bai7.Id" asp-route-bai7_2Id="@x.Bai7_2.Id" class="btn btn-warning">Chi Tiết </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<button onclick="In()">In Phiếu Nhập</button>
+<br>
+<br>
+<br>
+
+<div class="border border-dark" id="PhieuInNhap" style="display:none;">
+    <div class="text-center">
+        <h2>Phiếu Nhập Kho</h2>
+    </div>
+    <br>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Số Phiếu Nhập</th>
+                <th>Mã Sản Phẩm</th>
+                <th>Sản Phẩm</th>
+                <th>Số Lượng</th>
+                <th>Đơn Giá</th>
+                <th>Ngày Nhập Kho</th>
+                <th>Kho</th>
+                <th>Nhà Cung Cắp</th>
+                <th>Ghi Chú</th>
+                <th>Thành Tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var x in Model)
+            {
+            <tr>
+
+                <td>@(x.Bai7?.So_Phieu_Nhap_Kho ?? "N/A")</td>
+                <td>@(x.Bai7_2?.sanpham?.Ma_San_Pham ?? "N/A")</td>
+                <td>@(x.Bai7_2?.sanpham?.Ten_San_Pham ?? "N/A")</td>
+                <td>@string.Format("{0:#,##0}", (x.Bai7_2?.SL_Nhap ?? 0))</td>
+                <td>@string.Format("{0:#,##0}", (x.Bai7_2?.Don_Gia_Nhap ?? 0))</td>
+                <td>@(x.Bai7?.Ngay_Nhap_Kho.ToShortDateString() ?? "N/A")</td>
+                <td>@(x.Bai7?.Kho?.Ten_Kho ?? "N/A")</td>
+                <td>@(x.Bai7?.NCC?.Ten_NCC ?? "N/A")</td>
+                <td>@(x.Bai7?.Ghi_Chu ?? "N/A")</td>
+                <td>@string.Format("{0:#,##0}",(x.TriGia))</td>
+            </tr>
+            }
+        <tr>
+            <td>Tổng</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>@string.Format("{0:#,##0}",(Model.Sum(x => x.TriGia)))</td>
+        </tr>
+            
+        </tbody>
+    </table>
+</div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    function In() {
+        // Hiển thị bảng Phiếu Nhập
+        $('#PhieuInNhap').show();
+
+        // Nếu cần gửi dữ liệu tới server, thực hiện ở đây
+        var data = {
+            FormData: $('#PhieuInNhap').html(), // Lấy nội dung HTML của bảng
+        };
+
+        $.post("/BaiTap7/Index", { formData: data })
+            .done(function () {
+                alert('In Phiếu Nhập Thành Công');
+            })
+            .fail(function () {
+                alert('In Phiếu Thất Bại');
+            });
+    }
+</script>

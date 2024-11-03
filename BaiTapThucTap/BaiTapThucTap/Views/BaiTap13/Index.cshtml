@@ -1,0 +1,56 @@
+﻿@model BaiTapThucTap.Controllers.BaiTap13Controller.CombinedViewModel
+
+<partial name="_Notification" />
+<div class="row">
+    <div class="col-md-6">
+        <h2>Chi Tiết xuất kho</h2>
+    </div>
+
+</div>
+<br>
+<div>
+    <h5>Số Phiếu Xuất: @(Model.BaiTap13Model.Bai11?.So_Phieu_Xuat_Kho ?? "N/A")</h5>
+    <h5>Mã Sản Phẩm : @Model.BaiTap13Model.Bai11_2.sanpham.Ma_San_Pham</h5>
+    <h5>Tên Sản Phẩm : @Model.BaiTap13Model.Bai11_2.sanpham.Ten_San_Pham</h5>
+    <h5>Số Lượng Nhập: @string.Format("{0:#,##0}", Model.BaiTap13Model.Bai11_2.SL_Xuat) </h5>
+    <h5>Đơn Giá: @string.Format("{0:#,##0}", Model.BaiTap13Model.Bai11_2.Don_Gia_Xuat) </h5>
+    <h5>Trị Giá : @string.Format("{0:#,##0}", Model.BaiTap13Model.TriGia)</h5>
+    <h5>Ngày Xuất: @(Model.BaiTap13Model.Bai11?.Ngay_Xuat_Kho.ToShortDateString() ?? "N/A")</h5>
+    <h5>Kho: @(Model.BaiTap13Model.Bai11?.Kho?.Ten_Kho ?? "N/A")</h5>
+    <h5>Ghi Chú: @(Model.BaiTap13Model.Bai11?.Ghi_Chu ?? "N/A")</h5>
+    <br>
+    <a asp-controller="BaiTap11" asp-action="Add" class="btn btn-primary">
+        <i class="bi bi-plus-circle-fill"></i> Add New
+    </a>
+    <a asp-controller="BaiTap11" asp-action="Delete" asp-route-bai11Id="@Model.BaiTap13Model.Bai11.Id" asp-route-bai11_2Id="@Model.BaiTap13Model.Bai11_2.Id" class="btn btn-danger">Delete</a>
+    <a asp-controller="BaiTap12" asp-action="Edit" asp-route-bai11Id="@Model.BaiTap13Model.Bai11.Id" asp-route-bai11_2Id="@Model.BaiTap13Model.Bai11_2.Id" class="btn btn-warning">Edit </a>
+</div>
+<br>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Mã Sản Phẩm</th>
+            <th>Sản Phẩm</th>
+            <th>Số Lượng</th>
+            <th>Đơn Giá</th>
+            <th>Trị Giá</th>
+            <th>Action</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var x in Model.ViewModelList)
+        {
+            <tr>
+                <td>@(x.Bai11_2?.sanpham?.Ma_San_Pham ?? "N/A")</td>
+                <td>@(x.Bai11_2?.sanpham?.Ten_San_Pham ?? "N/A")</td>
+                <td>@string.Format("{0:#,##0}", (x.Bai11_2?.SL_Xuat ?? 0))</td>
+                <td>@string.Format("{0:#,##0}", (x.Bai11_2?.Don_Gia_Xuat ?? 0))</td>
+                <td>@string.Format("{0:#,##0}", (x.TriGia))</td>
+                <td>
+                    <a asp-action="Index" asp-route-bai11Id="@x.Bai11.Id" asp-route-bai11_2Id="@x.Bai11_2.Id" class="btn btn-warning">Chi Tiết </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

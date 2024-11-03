@@ -1,0 +1,57 @@
+﻿@model BaiTapThucTap.Controllers.BaiTap9Controller.CombinedViewModel
+
+<partial name="_Notification" />
+<div class="row">
+    <div class="col-md-6">
+        <h2>Chi Tiết nhập kho</h2>
+    </div>
+
+</div>
+<br>
+<div>
+    <h5>Số Phiếu Nhập: @(Model.BaiTap9Model.Bai7?.So_Phieu_Nhap_Kho ?? "N/A")</h5>
+    <h5>Mã Sản Phẩm : @Model.BaiTap9Model.Bai7_2.sanpham.Ma_San_Pham</h5>
+    <h5>Tên Sản Phẩm : @Model.BaiTap9Model.Bai7_2.sanpham.Ten_San_Pham</h5>
+    <h5>Số Lượng Nhập: @string.Format("{0:#,##0}", Model.BaiTap9Model.Bai7_2.SL_Nhap) </h5>
+    <h5>Đơn Giá: @string.Format("{0:#,##0}", Model.BaiTap9Model.Bai7_2.Don_Gia_Nhap) </h5>
+    <h5>Trị Giá : @string.Format("{0:#,##0}", Model.BaiTap9Model.TriGia)</h5>
+    <h5>Ngày Nhập: @(Model.BaiTap9Model.Bai7?.Ngay_Nhap_Kho.ToShortDateString() ?? "N/A")</h5>
+    <h5>Kho: @(Model.BaiTap9Model.Bai7?.Kho?.Ten_Kho ?? "N/A")</h5>
+    <h5>Nhà Cung Cấp: @(Model.BaiTap9Model.Bai7?.NCC?.Ten_NCC ?? "N/A")</h5>
+    <h5>Ghi Chú: @(Model.BaiTap9Model.Bai7?.Ghi_Chu ?? "N/A")</h5>
+    <br>
+    <a asp-controller="BaiTap7" asp-action="Add" class="btn btn-primary">
+        <i class="bi bi-plus-circle-fill"></i> Add New
+    </a>
+    <a asp-controller="BaiTap7" asp-action="Delete" asp-route-bai7Id="@Model.BaiTap9Model.Bai7.Id" asp-route-bai7_2Id="@Model.BaiTap9Model.Bai7_2.Id" class="btn btn-danger">Delete</a>
+    <a asp-controller="BaiTap8" asp-action="Edit" asp-route-bai7Id="@Model.BaiTap9Model.Bai7.Id" asp-route-bai7_2Id="@Model.BaiTap9Model.Bai7_2.Id" class="btn btn-warning">Edit </a>
+</div>
+<br>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Mã Sản Phẩm</th>
+            <th>Sản Phẩm</th>
+            <th>Số Lượng</th>
+            <th>Đơn Giá</th>
+            <th>Trị Giá</th>
+            <th>Action</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var x in Model.ViewModelList)
+        {
+            <tr>
+                <td>@(x.Bai7_2?.sanpham?.Ma_San_Pham ?? "N/A")</td>
+                <td>@(x.Bai7_2?.sanpham?.Ten_San_Pham ?? "N/A")</td>
+                <td>@string.Format("{0:#,##0}", (x.Bai7_2?.SL_Nhap ?? 0))</td>
+                <td>@string.Format("{0:#,##0}", (x.Bai7_2?.Don_Gia_Nhap ?? 0))</td>
+                <td>@string.Format("{0:#,##0}", (x.TriGia))</td>
+                <td>
+                    <a asp-action="Index" asp-route-bai7Id="@x.Bai7.Id" asp-route-bai7_2Id="@x.Bai7_2.Id" class="btn btn-warning">Chi Tiết </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
