@@ -16,7 +16,7 @@ namespace BaiTapThucTap.Controllers
         }
         public IActionResult Index()
         {
-            var listNCC = _db.tbl_DM_NCC.ToList();
+            var listNCC = _db.tbl_DM_NCC.Where(x => x.Id != 1).ToList();
             return View(listNCC);
         }
         public IActionResult Add()
@@ -154,6 +154,13 @@ namespace BaiTapThucTap.Controllers
             if (ncc == null)
             {
                 return NotFound();
+            }
+            // Cập nhật các sản phẩm có khóa ngoại Don_Vi_Tin_ID trỏ đến đơn vị tính này
+            var PNList = _db.tbl_DM_Nhap_Kho.Where(sp => sp.NCC_ID == id).ToList();
+
+            foreach (var x in PNList)
+            {
+                x.NCC_ID = 1;
             }
             _db.tbl_DM_NCC.Remove(ncc);
             _db.SaveChanges();

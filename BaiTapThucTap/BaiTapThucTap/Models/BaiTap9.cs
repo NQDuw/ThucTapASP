@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace BaiTapThucTap.Models
 {
-    public class BaiTap9:ViewModelBai7
+    public class BaiTap9
     {
-        public int TriGia { get; set; }
+        public BaiTap7 Bai7 { get; set; }
+        public List<BaiTap7_2> Bai7_2 { get; set; } 
+        public decimal TriGia { get; set; }
     }
 }

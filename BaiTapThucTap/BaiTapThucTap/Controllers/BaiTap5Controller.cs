@@ -16,7 +16,7 @@ namespace BaiTapThucTap.Controllers
         }
         public IActionResult Index()
         {
-            var listKho = _db.tbl_DM_Kho.ToList();
+            var listKho = _db.tbl_DM_Kho.Where(x => x.Id != 1).ToList();
             return View(listKho);
         }
         public IActionResult Add()
@@ -114,6 +114,26 @@ namespace BaiTapThucTap.Controllers
             if (kho == null)
             {
                 return NotFound();
+            }
+
+            var PNList = _db.tbl_DM_Nhap_Kho.Where(sp => sp.Kho_ID == id).ToList();
+
+            foreach (var x in PNList)
+            {
+                x.Kho_ID = 1;
+            }
+
+            var PXList = _db.tbl_DM_Xuat_Kho.Where(sp => sp.Kho_ID == id).ToList();
+
+            foreach (var x in PXList)
+            {
+                x.Kho_ID = 1;
+            }
+            var UserList = _db.tbl_DM_Kho_User.Where(sp => sp.Kho_ID == id).ToList();
+
+            foreach (var x in UserList)
+            {
+                x.Kho_ID = 1;
             }
             _db.tbl_DM_Kho.Remove(kho);
             _db.SaveChanges();

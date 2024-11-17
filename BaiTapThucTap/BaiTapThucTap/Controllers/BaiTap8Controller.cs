@@ -19,83 +19,80 @@ namespace BaiTapThucTap.Controllers
             _db = db;
             _hosting = hosting;
         }
-        public IActionResult Index()
-        {
-            var listBai7 = _db.tbl_DM_Nhap_Kho.Include(x => x.Kho).Include(x => x.NCC);
-            var listBai7_2 = _db.tbl_DM_Nhap_Kho_Raw_Data.Include(x => x.sanpham);
-            var viewModelList = listBai7.Join(listBai7_2,
-            bai7 => bai7.Id,
-            bai7_2 => bai7_2.Id,
-            (bai7, bai7_2) => new BaiTap8
-            {
-                Bai7 = bai7,
-                Bai7_2 = bai7_2,
-            })
-        .ToList();
-            return View(viewModelList);
-        }
         private void LoadViewBag()
         {
-            ViewBag.SPList = _db.tbl_DM_San_Pham.Select(x => new SelectListItem
+            ViewBag.SPList = _db.tbl_DM_San_Pham.Where(x => x.Id != 1).Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Ten_San_Pham
             }).ToList();
 
-            ViewBag.NCCList = _db.tbl_DM_NCC.Select(x => new SelectListItem
+            ViewBag.NCCList = _db.tbl_DM_NCC.Where(x => x.Id != 1).Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Ten_NCC
             }).ToList();
 
-            ViewBag.KhoList = _db.tbl_DM_Kho.Select(x => new SelectListItem
+            ViewBag.KhoList = _db.tbl_DM_Kho.Where(x=>x.Id!=1).Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Ten_Kho
             }).ToList();
         }
-        public IActionResult Edit(int bai7Id, int bai7_2Id)
+
+        public IActionResult Index()
+        {
+            var listBai7 = _db.tbl_DM_Nhap_Kho.Include(x => x.Kho).Include(x => x.NCC).ToList();
+            LoadViewBag();
+            return View(listBai7);
+        }
+        public IActionResult Edit(int bai7Id)
         {
             var nk = _db.tbl_DM_Nhap_Kho.FirstOrDefault(x => x.Id == bai7Id);
-            var nkr = _db.tbl_DM_Nhap_Kho_Raw_Data.FirstOrDefault(x => x.Id == bai7_2Id);
-            if (nk == null || nkr == null)
+            if (nk == null )
             {
                 return NotFound();
             }
             var viewModel = new BaiTap8
             {
-                Bai7 = nk,
-                Bai7_2 = nkr
+                Bai7 = nk
             };
             LoadViewBag();
             return View(viewModel);
         }
         [HttpPost]
 
-        public IActionResult Edit(BaiTap8 model, int bai7Id, int bai7_2Id)
+        public IActionResult Edit(BaiTap8 model, int bai7Id)
         {
             var nk = _db.tbl_DM_Nhap_Kho.Find(bai7Id);
-            var nkr = _db.tbl_DM_Nhap_Kho_Raw_Data.Find(bai7_2Id);
 
-            if (nk == null || nkr == null)
+            if (nk == null )
             {
                 return NotFound();
             }
 
             if (string.IsNullOrWhiteSpace(model.Bai7.So_Phieu_Nhap_Kho))
             {
-                ModelState.AddModelError("So_Phieu_Nhap_Kho", "số phiếu nhập không được để trống.");
+                ModelState.AddModelError("Bai7.So_Phieu_Nhap_Kho", "Số Phiếu Nhập không được để trống.");
             }
             else
             {
-                var ktrMa = _db.tbl_DM_Nhap_Kho
-                              .FirstOrDefault(d => d.So_Phieu_Nhap_Kho.Trim().ToLower() == model.Bai7.So_Phieu_Nhap_Kho.Trim().ToLower());
-
-                if (ktrMa != null)
+                var oldSoPhieu = nk.So_Phieu_Nhap_Kho;
+                var ktrMaTrung = _db.tbl_DM_Nhap_Kho
+                             .FirstOrDefault(d => d.So_Phieu_Nhap_Kho.Trim().ToLower() == nk.So_Phieu_Nhap_Kho.Trim().ToLower());
+                if (model.Bai7.So_Phieu_Nhap_Kho != oldSoPhieu)
                 {
-                    ModelState.AddModelError("So_Phieu_Nhap_Kho", "số phiếu nhập đã tồn tại đã tồn tại.");
+                    if (ktrMaTrung != null)
+                    {
+                        ModelState.AddModelError("Bai7.So_Phieu_Nhap_Kho", "Số Phiếu Nhập đã tồn tại.");
+                    }
+                    else
+                    {
+                        nk.So_Phieu_Nhap_Kho = model.Bai7.So_Phieu_Nhap_Kho;
+                    }
                 }
             }
+
             LoadViewBag();
             if (model.Bai7.Kho_ID <= 0)
             {
@@ -106,34 +103,32 @@ namespace BaiTapThucTap.Controllers
             {
                 ModelState.AddModelError("NCC_ID", "Vui lòng chọn nhà cung cấp");
             }
-            if (model.Bai7_2.San_Pham_ID <= 0)
-            {
-                ModelState.AddModelError("San_Pham_ID", "Vui lòng chọn sản phẩm");
-            }
 
-           
+            var listKho = _db.tbl_DM_Kho.ToList();
+
+            if (listKho.Find(x => x.Id == model.Bai7.Kho_ID) == null)
+            {
+                ModelState.AddModelError("Bai7.Kho_ID", "Kho đã bị xóa");
+            }
+            var listdonvitin = _db.tbl_DM_Loai_San_Pham.ToList();
+            if (listdonvitin.Find(x => x.Id == model.Bai7.NCC_ID) == null)
+            {
+                ModelState.AddModelError("Bai7.NCC_ID", "nhà cung cấp đã bị xóa");
+            }
+            if (ModelState.IsValid)
+            {
                 nk.So_Phieu_Nhap_Kho = model.Bai7.So_Phieu_Nhap_Kho;
-                if (nkr != null)
-                {
-                    nkr.Nhap_Kho_ID = nk.Id;
-                }
-                nkr.San_Pham_ID = model.Bai7_2.San_Pham_ID;
                 nk.Kho_ID = model.Bai7.Kho_ID;
                 nk.NCC_ID = model.Bai7.NCC_ID;
                 nk.Ngay_Nhap_Kho = model.Bai7.Ngay_Nhap_Kho;
-                nkr.Don_Gia_Nhap = model.Bai7_2.Don_Gia_Nhap;
-                nkr.SL_Nhap = model.Bai7_2.SL_Nhap;
                 nk.Ghi_Chu = model.Bai7.Ghi_Chu;
                 // Tạo đối tượng mới cho tbl_XNK_Nhap_Kho
                 var xnk = new BaiTap8
                 {
                     So_Phieu_Nhap_Kho = nk.So_Phieu_Nhap_Kho,
-                    San_Pham_ID = nkr.San_Pham_ID,
                     Kho_ID = nk.Kho_ID,
                     NCC_ID = nk.NCC_ID,
                     Ngay_Nhap_Kho = nk.Ngay_Nhap_Kho,
-                    Don_Gia_Nhap = nkr.Don_Gia_Nhap,
-                    SL_Nhap = nkr.SL_Nhap,
                     Ghi_Chu = nk.Ghi_Chu
                 };
                 // Thêm đối tượng mới vào DbSet
@@ -141,8 +136,37 @@ namespace BaiTapThucTap.Controllers
                 _db.SaveChanges();
                 TempData["success"] = "Sửa Thành Công";
                 return RedirectToAction("Index");
-            TempData["success"] = $"{ModelState.IsValid}";
+            }
             return View(model);
         }
+
+        public IActionResult GetListKhoByKho(int? khoId)
+        {
+            if (khoId.HasValue && khoId.Value > 0)
+            {
+                // Nếu có khoId, lọc dữ liệu theo kho
+                var listBai7 = _db.tbl_DM_Nhap_Kho
+                    .Include(x => x.Kho)
+                    .Include(x => x.NCC)
+                    .Where(x => x.Kho_ID == khoId)  // Lọc theo Kho_ID
+                    .ToList();
+
+                // Trả về partial view chỉ với kho đã chọn
+                return PartialView("ListTheoKho", listBai7);
+            }
+            else
+            {
+                // Nếu không có khoId, lấy tất cả dữ liệu (toàn bộ kho)
+                var listBai7 = _db.tbl_DM_Nhap_Kho
+                    .Include(x => x.Kho)
+                    .Include(x => x.NCC)
+                    .ToList();
+
+                // Trả về partial view với tất cả dữ liệu
+                return PartialView("ListTheoKho", listBai7);
+            }
+
+        }
     }
+    
 }

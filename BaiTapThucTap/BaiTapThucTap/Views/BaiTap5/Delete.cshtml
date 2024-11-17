@@ -1,7 +1,6 @@
 ﻿@model BaiTap5
 
-@if (User.IsInRole(SD.Role_Admin))
-{
+
 <form asp-action="DeleteConfirmed" method="post">
     <input type="hidden" asp-for="Id" />
     <h2>Xác nhận xóa</h2>
@@ -18,8 +17,3 @@
     <button type="submit" class="btn btn-danger"> Delete </button>
     <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </form>
-}
-else
-{
-    <h2>Bạn không có quyền truy cập vào trang này.</h2>
-}

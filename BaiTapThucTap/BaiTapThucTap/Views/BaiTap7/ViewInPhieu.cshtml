@@ -1,0 +1,92 @@
+﻿@model List<BaiTap7_2>
+    <div class="text-right"> <button id="TatPhieu" class="btn btn-danger" onclick="TatPhieu()">Tắt</button></div>
+
+<div class="border border-dark" id="PhieuInNhap">
+    <br>
+    <div class="text-center">
+        <h2>Phiếu Nhập Kho</h2>
+    </div>
+    <br>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr style="color:white; background-color:darkgreen">
+                <th>Số Phiếu Nhập</th>
+                <th>Ngày Nhập Kho</th>
+                <th>Kho</th>
+                <th>Nhà Cung Cắp</th>
+                <th>Mã Sản Phẩm</th>
+                <th>Sản Phẩm</th>
+                <th>Số Lượng</th>
+                <th>Đơn Giá</th>
+                <th>Ghi Chú</th>
+                <th>Thành Tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var x in Model)
+            {
+                <tr>
+                    <td>@(x.NhapKho.So_Phieu_Nhap_Kho ?? "N/A")</td>
+                    <td>@(x.NhapKho.Ngay_Nhap_Kho.ToShortDateString() ?? "N/A")</td>
+                    <td>@(x.NhapKho.Kho?.Ten_Kho ?? "N/A")</td>
+                    <td>@(x.NhapKho.NCC?.Ten_NCC ?? "N/A")</td>
+                    <td>@(x.sanpham?.Ma_San_Pham ?? "N/A")</td>
+                    <td>@(x.sanpham?.Ten_San_Pham ?? "N/A")</td>
+                    <td>@string.Format("{0:#,##0}", (x?.SL_Nhap ?? 0))</td>
+                    <td>@string.Format("{0:#,##0}", (x?.Don_Gia_Nhap ?? 0))</td>
+                    <td>@(x.NhapKho.Ghi_Chu ?? "N/A")</td>
+                    <td>@string.Format("{0:#,##0}", (x?.SL_Nhap ?? 0) * (x?.Don_Gia_Nhap ?? 0))</td>
+                </tr>
+            }
+            <tr style="color:white; background-color:lightsteelblue">
+                <td>Tổng</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>@string.Format("{0:#,##0}", (Model.Sum(x => (x?.SL_Nhap ?? 0) * (x?.Don_Gia_Nhap ?? 0))))</td>
+            </tr>
+
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <div class="row text-center">
+        <div class="col-md-3">
+            <h5>Người Lập Phiếu</h5>
+            <p>(Ký, họ Tên)</p>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+        <div class="col-md-3">
+            <h5>Người Giap Hàng</h5>
+            <p>(Ký, họ Tên)</p>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+        <div class="col-md-3">
+            <h5>Thủ Kho</h5>
+            <p>(Ký, họ Tên)</p>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+        <div class="col-md-3">
+            <h5>Kế Toán Trưởng</h5>
+            <p>(Ký, họ Tên)</p>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+    </div>
+</div>

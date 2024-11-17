@@ -40,16 +40,26 @@
                 @foreach (var x in Model.ListSearch)
                 {
                     <tr>
-                        <td>@(x.Bai7?.Ngay_Nhap_Kho)</td>
-                        <td>@(x.Bai7?.So_Phieu_Nhap_Kho)</td>
-                        <td>@(x.Bai7?.NCC?.Ten_NCC ?? "N/A")</td>
-                        <td>@(x.Bai7_2?.sanpham?.Ma_San_Pham ?? "N/A")</td>
-                        <td>@(x.Bai7_2?.sanpham?.Ten_San_Pham ?? "N/A")</td>
-                        <td>@string.Format("{0:#,##0}", (x.Bai7_2?.SL_Nhap ?? 0))</td>
-                        <td>@string.Format("{0:#,##0}", (x.Bai7_2?.Don_Gia_Nhap ?? 0))</td>
-                        <td>@string.Format("{0:#,##0}", (x.TriGia))</td>
+                        <td>@(x.NhapKho?.Ngay_Nhap_Kho)</td>
+                        <td>@(x.NhapKho?.So_Phieu_Nhap_Kho)</td>
+                        <td>@(x.NhapKho?.NCC?.Ten_NCC ?? "N/A")</td>
+                        <td>@(x.sanpham?.Ma_San_Pham ?? "N/A")</td>
+                        <td>@(x.sanpham?.Ten_San_Pham ?? "N/A")</td>
+                        <td>@string.Format("{0:#,##0}", (x?.SL_Nhap ?? 0))</td>
+                        <td>@string.Format("{0:#,##0}", (x?.Don_Gia_Nhap ?? 0))</td>
+                        <td>@string.Format("{0:#,##0}", (x?.SL_Nhap ?? 0) * (x?.Don_Gia_Nhap ?? 0))</td>
                     </tr>
                 }
+                <tr>
+                    <td>Tổng</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>@string.Format("{0:#,##0}", Model.ListSearch.Sum(x => x?.SL_Nhap))</td>
+                    <td></td>
+                    <td>@string.Format("{0:#,##0}", Model.ListSearch.Sum(x => (x?.SL_Nhap ?? 0) * (x?.Don_Gia_Nhap ?? 0)))</td>
+                </tr>
             </tbody>
         </table>
     </div>

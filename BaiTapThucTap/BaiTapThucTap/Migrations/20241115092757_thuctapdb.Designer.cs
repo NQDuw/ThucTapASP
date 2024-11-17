@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaiTapThucTap.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20241102114741_Bai1_Bai13")]
-    partial class Bai1_Bai13
+    [Migration("20241115092757_thuctapdb")]
+    partial class thuctapdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,74 @@ namespace BaiTapThucTap.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("BaiTapThucTap.Models.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Kho_ID")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers");
+                });
 
             modelBuilder.Entity("BaiTapThucTap.Models.BaiTap1", b =>
                 {
@@ -43,16 +111,21 @@ namespace BaiTapThucTap.Migrations
                         new
                         {
                             Id = 1,
-                            Ten_Don_Vi_Tinh = "Tấn"
+                            Ten_Don_Vi_Tinh = "đơn vị tính đã bị xóa"
                         },
                         new
                         {
                             Id = 2,
-                            Ten_Don_Vi_Tinh = "Kg"
+                            Ten_Don_Vi_Tinh = "Tấn"
                         },
                         new
                         {
                             Id = 3,
+                            Ten_Don_Vi_Tinh = "Kg"
+                        },
+                        new
+                        {
+                            Id = 4,
                             Ten_Don_Vi_Tinh = "g"
                         });
                 });
@@ -67,7 +140,8 @@ namespace BaiTapThucTap.Migrations
                     b.Property<string>("Ghi_Chu")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Kho_ID")
+                    b.Property<int?>("Kho_ID")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Ngay_Xuat_Kho")
@@ -87,14 +161,14 @@ namespace BaiTapThucTap.Migrations
                         new
                         {
                             Id = 1,
-                            Kho_ID = 1,
+                            Kho_ID = 2,
                             Ngay_Xuat_Kho = new DateTime(2024, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             So_Phieu_Xuat_Kho = "SPX1"
                         },
                         new
                         {
                             Id = 2,
-                            Kho_ID = 2,
+                            Kho_ID = 3,
                             Ngay_Xuat_Kho = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             So_Phieu_Xuat_Kho = "SPX2"
                         });
@@ -126,12 +200,18 @@ namespace BaiTapThucTap.Migrations
                         new
                         {
                             Id = 1,
+                            Ma_LSP = "Loại Sản Phẩm đã bị xóa",
+                            Ten_LSP = "Loại Sản Phẩm đã bị xóa"
+                        },
+                        new
+                        {
+                            Id = 2,
                             Ma_LSP = "LSPT",
                             Ten_LSP = "Thực Phẩm Tươi"
                         },
                         new
                         {
-                            Id = 2,
+                            Id = 3,
                             Ma_LSP = "LSPK",
                             Ten_LSP = "Thực Phẩm Khô"
                         });
@@ -175,46 +255,54 @@ namespace BaiTapThucTap.Migrations
                             Id = 1,
                             Don_Vi_Tin_ID = 1,
                             Loai_San_Pham_ID = 1,
+                            Ma_San_Pham = "Sản phẩm đã bị xóa",
+                            Ten_San_Pham = "sản phẩm đã bị xóa"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Don_Vi_Tin_ID = 2,
+                            Loai_San_Pham_ID = 2,
                             Ma_San_Pham = "TPT1",
                             Ten_San_Pham = "Cá"
                         },
                         new
                         {
-                            Id = 2,
-                            Don_Vi_Tin_ID = 3,
-                            Loai_San_Pham_ID = 1,
+                            Id = 3,
+                            Don_Vi_Tin_ID = 4,
+                            Loai_San_Pham_ID = 2,
                             Ma_San_Pham = "TPT2",
                             Ten_San_Pham = "Tôm"
                         },
                         new
                         {
-                            Id = 3,
-                            Don_Vi_Tin_ID = 3,
-                            Loai_San_Pham_ID = 1,
+                            Id = 4,
+                            Don_Vi_Tin_ID = 4,
+                            Loai_San_Pham_ID = 2,
                             Ma_San_Pham = "TPT3",
                             Ten_San_Pham = "Cua"
                         },
                         new
                         {
-                            Id = 4,
-                            Don_Vi_Tin_ID = 2,
-                            Loai_San_Pham_ID = 2,
+                            Id = 5,
+                            Don_Vi_Tin_ID = 3,
+                            Loai_San_Pham_ID = 3,
                             Ma_San_Pham = "TPK1",
                             Ten_San_Pham = "Khô Cá"
                         },
                         new
                         {
-                            Id = 5,
-                            Don_Vi_Tin_ID = 2,
-                            Loai_San_Pham_ID = 2,
+                            Id = 6,
+                            Don_Vi_Tin_ID = 3,
+                            Loai_San_Pham_ID = 3,
                             Ma_San_Pham = "TPK2",
                             Ten_San_Pham = "Lạp Xưởng"
                         },
                         new
                         {
-                            Id = 6,
-                            Don_Vi_Tin_ID = 3,
-                            Loai_San_Pham_ID = 2,
+                            Id = 7,
+                            Don_Vi_Tin_ID = 4,
+                            Loai_San_Pham_ID = 3,
                             Ma_San_Pham = "TPK3",
                             Ten_San_Pham = "Thịt Khô"
                         });
@@ -246,12 +334,18 @@ namespace BaiTapThucTap.Migrations
                         new
                         {
                             Id = 1,
+                            Ma_NCC = "Nhà cung cấp đã bị xóa",
+                            Ten_NCC = "nhà cung cấp đã bị xóa"
+                        },
+                        new
+                        {
+                            Id = 2,
                             Ma_NCC = "CTK",
                             Ten_NCC = "Công Ty Khô"
                         },
                         new
                         {
-                            Id = 2,
+                            Id = 3,
                             Ma_NCC = "CTT",
                             Ten_NCC = "Công Ty Tươi"
                         });
@@ -279,31 +373,38 @@ namespace BaiTapThucTap.Migrations
                         new
                         {
                             Id = 1,
-                            Ten_Kho = "Đông Lạnh A"
+                            Ten_Kho = "Kho đã bị xóa"
                         },
                         new
                         {
                             Id = 2,
+                            Ten_Kho = "Đông Lạnh A"
+                        },
+                        new
+                        {
+                            Id = 3,
                             Ten_Kho = "Hầm Chứa B"
                         });
                 });
 
             modelBuilder.Entity("BaiTapThucTap.Models.BaiTap6", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Kho_ID")
+                    b.Property<int?>("Kho_ID")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Ma_Dang_Nhap")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Kho_ID");
+
+                    b.HasIndex("Ma_Dang_Nhap");
 
                     b.ToTable("tbl_DM_Kho_User");
                 });
@@ -343,16 +444,16 @@ namespace BaiTapThucTap.Migrations
                         new
                         {
                             Id = 1,
-                            Kho_ID = 1,
-                            NCC_ID = 1,
+                            Kho_ID = 2,
+                            NCC_ID = 2,
                             Ngay_Nhap_Kho = new DateTime(2024, 10, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             So_Phieu_Nhap_Kho = "SPN1"
                         },
                         new
                         {
                             Id = 2,
-                            Kho_ID = 2,
-                            NCC_ID = 2,
+                            Kho_ID = 3,
+                            NCC_ID = 3,
                             Ngay_Nhap_Kho = new DateTime(2024, 11, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             So_Phieu_Nhap_Kho = "SPN2"
                         });
@@ -392,7 +493,7 @@ namespace BaiTapThucTap.Migrations
                             Don_Gia_Nhap = 1500000,
                             Nhap_Kho_ID = 1,
                             SL_Nhap = 3,
-                            San_Pham_ID = 1
+                            San_Pham_ID = 2
                         },
                         new
                         {
@@ -400,7 +501,7 @@ namespace BaiTapThucTap.Migrations
                             Don_Gia_Nhap = 8500000,
                             Nhap_Kho_ID = 2,
                             SL_Nhap = 15,
-                            San_Pham_ID = 2
+                            San_Pham_ID = 3
                         });
                 });
 
@@ -417,9 +518,6 @@ namespace BaiTapThucTap.Migrations
                     b.Property<int?>("Bai7_2Id")
                         .HasColumnType("int");
 
-                    b.Property<int>("Don_Gia_Nhap")
-                        .HasColumnType("int");
-
                     b.Property<string>("Ghi_Chu")
                         .HasColumnType("nvarchar(max)");
 
@@ -432,17 +530,11 @@ namespace BaiTapThucTap.Migrations
                     b.Property<DateTime>("Ngay_Nhap_Kho")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SL_Nhap")
-                        .HasColumnType("int");
-
-                    b.Property<int>("San_Pham_ID")
-                        .HasColumnType("int");
-
                     b.Property<string>("So_Phieu_Nhap_Kho")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TriGia")
-                        .HasColumnType("int");
+                    b.Property<decimal>("TriGia")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -486,7 +578,7 @@ namespace BaiTapThucTap.Migrations
                             Id = 1,
                             Don_Gia_Xuat = 1500000,
                             SL_Xuat = 3,
-                            San_Pham_ID = 1,
+                            San_Pham_ID = 2,
                             Xuat_Kho_ID = 1
                         },
                         new
@@ -494,7 +586,7 @@ namespace BaiTapThucTap.Migrations
                             Id = 2,
                             Don_Gia_Xuat = 7600000,
                             SL_Xuat = 9,
-                            San_Pham_ID = 2,
+                            San_Pham_ID = 3,
                             Xuat_Kho_ID = 2
                         });
                 });
@@ -506,7 +598,10 @@ namespace BaiTapThucTap.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Don_Gia_Xuat")
+                    b.Property<int?>("Bai11Id")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Bai11_2Id")
                         .HasColumnType("int");
 
                     b.Property<string>("Ghi_Chu")
@@ -521,16 +616,17 @@ namespace BaiTapThucTap.Migrations
                     b.Property<DateTime>("Ngay_Xuat_Kho")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SL_Xuat")
-                        .HasColumnType("int");
-
-                    b.Property<int>("San_Pham_ID")
-                        .HasColumnType("int");
-
                     b.Property<string>("So_Phieu_Xuat_Kho")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("TriGia")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("Bai11Id");
+
+                    b.HasIndex("Bai11_2Id");
 
                     b.ToTable("tbl_XNK_Xuat_Kho");
                 });
@@ -584,71 +680,6 @@ namespace BaiTapThucTap.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -745,7 +776,7 @@ namespace BaiTapThucTap.Migrations
             modelBuilder.Entity("BaiTapThucTap.Models.BaiTap3", b =>
                 {
                     b.HasOne("BaiTapThucTap.Models.BaiTap1", "DonViTinh")
-                        .WithMany()
+                        .WithMany("SanPhams")
                         .HasForeignKey("Don_Vi_Tin_ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -769,7 +800,15 @@ namespace BaiTapThucTap.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BaiTapThucTap.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("Ma_Dang_Nhap")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Kho");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BaiTapThucTap.Models.BaiTap7", b =>
@@ -844,6 +883,21 @@ namespace BaiTapThucTap.Migrations
                     b.Navigation("XuatKho");
                 });
 
+            modelBuilder.Entity("BaiTapThucTap.Models.BaiTapModel12", b =>
+                {
+                    b.HasOne("BaiTapThucTap.Models.BaiTap11", "Bai11")
+                        .WithMany()
+                        .HasForeignKey("Bai11Id");
+
+                    b.HasOne("BaiTapThucTap.Models.BaiTapModel11_2", "Bai11_2")
+                        .WithMany()
+                        .HasForeignKey("Bai11_2Id");
+
+                    b.Navigation("Bai11");
+
+                    b.Navigation("Bai11_2");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -855,7 +909,7 @@ namespace BaiTapThucTap.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("BaiTapThucTap.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -864,7 +918,7 @@ namespace BaiTapThucTap.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("BaiTapThucTap.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -879,7 +933,7 @@ namespace BaiTapThucTap.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("BaiTapThucTap.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -888,11 +942,16 @@ namespace BaiTapThucTap.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("BaiTapThucTap.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BaiTapThucTap.Models.BaiTap1", b =>
+                {
+                    b.Navigation("SanPhams");
                 });
 #pragma warning restore 612, 618
         }

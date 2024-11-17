@@ -1,0 +1,27 @@
+﻿@model BaiTap6
+@if (User.IsInRole("Admin"))
+{
+<form asp-action="Edit" asp-route-Id="@Model.Id" method="post">
+    <h2>Sửa Kho Cho User</h2>
+    <hr />
+    <div class="form-group">
+        <label>User</label>
+        <input asp-for="User.Email" disabled class="form-control" />
+    </div>
+    <span asp-validation-for="User.Email" class="text-danger"></span>
+
+    <div class="form-group pb-2">
+        <label>Kho</label>
+        <select asp-for="Kho_ID" asp-items="@ViewBag.KhoList" class="form-control">
+            <option disabled selected>==Chọn loại Kho==</option>
+        </select>
+        <span asp-validation-for="Kho_ID" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary"> Save </button>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>
+}
+else
+{
+    <h1>Không có quyền truy cập</h1>
+}

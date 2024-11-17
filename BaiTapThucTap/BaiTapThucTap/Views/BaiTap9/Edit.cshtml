@@ -1,0 +1,34 @@
+﻿@model ViewModelBai7
+
+
+<form asp-action="Edit" asp-route-bai7Id="@ViewBag.Bai7Id" asp-route-IdSP="@ViewBag.IdSP" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Bai7_2.Id" />    
+    <h2>Cập Nhật Sản Phẩm</h2>
+    <hr />
+    <div class="form-group">
+        <label>Mã Sản Phẩm</label>
+        <input asp-for="Bai7_2.sanpham.Ma_San_Pham" class="form-control" readonly />
+        <span asp-validation-for="Bai7_2.sanpham.Ma_San_Pham" class="text-danger"></span>
+    </div>
+    <div class="form-group pb-2">
+        <label>Tên  Sản Phẩm</label>
+        <select asp-for="Bai7_2.San_Pham_ID" asp-items="@ViewBag.SPList" class="form-control">
+            <option disabled selected>==Chọn loại sản phẩm==</option>
+        </select>
+        <span asp-validation-for="Bai7_2.San_Pham_ID" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group">
+        <label>Số lượng</label>
+        <input asp-for="Bai7_2.SL_Nhap" class="form-control" />
+        <span asp-validation-for="Bai7_2.SL_Nhap" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Đơn Giá</label>
+        <input asp-for="Bai7_2.Don_Gia_Nhap" class="form-control" />
+        <span asp-validation-for="Bai7_2.Don_Gia_Nhap" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary"> Edit </button>
+    <a asp-action="Index" asp-route-bai7Id="@ViewBag.Bai7Id" class="btn btn-secondary">Back to List</a>
+</form>

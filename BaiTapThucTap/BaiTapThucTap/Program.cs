@@ -22,5 +22,6 @@ namespace BaiTapThucTap
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
     }
 }

@@ -32,7 +32,7 @@
 
             <td>@x.Ghi_Chu</td>
             <td>
-                <a asp-action="Update" asp-route-id="@x.Id" class="btn btn-success">
+                <a asp-action="Update" asp-route-id="@x.Id" asp-route-idDVT="@x.Don_Vi_Tin_ID"asp-route-idLSP="@x.Loai_San_Pham_ID" class="btn btn-success">
                     <i class="bi bi-pencil-square"></i> Edit
                 </a>
                 <a asp-action="Delete" asp-route-id="@x.Id" class="btn btn-danger">

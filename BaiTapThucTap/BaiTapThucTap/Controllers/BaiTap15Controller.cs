@@ -19,11 +19,26 @@ namespace BaiTapThucTap.Controllers
         public class CombinedViewModel
         {
             public BaiTap15 SearchModel { get; set; }
-            public List<ViewModelBai7> ListSearch { get; set; }
+            public List<BaiTap7_2> ListSearch { get; set; }
         }
         public IActionResult Index()
         {
             var model = new CombinedViewModel();
+            var ngayNhap = new BaiTap15
+            {
+                NgayBatDau = new DateTime(2024, 01, 01),
+                NgayKetThuc = new DateTime(2024, 12, 31)
+               
+            };
+            var listBai7_2 = _db.tbl_DM_Nhap_Kho_Raw_Data
+                .Include(x => x.sanpham)
+                .Include(x=>x.NhapKho)
+                .Include(x=>x.NhapKho.NCC)
+                .Where(x => x.NhapKho.Ngay_Nhap_Kho >= ngayNhap.NgayBatDau && x.NhapKho.Ngay_Nhap_Kho <= ngayNhap.NgayKetThuc)
+                .ToList();
+            model.ListSearch = listBai7_2;
+            model.SearchModel=ngayNhap ;
+
             return View(model); 
         }
 
@@ -32,23 +47,14 @@ namespace BaiTapThucTap.Controllers
         {
             if (ModelState.IsValid) // Kiểm tra tính hợp lệ của model
             {
-                // Thực hiện tìm kiếm dựa trên model.SearchModel.NgayBatDau và model.SearchModel.NgayKetThuc
-                var listBai7 = _db.tbl_DM_Nhap_Kho.Include(x => x.Kho).Include(x => x.NCC);
-                var listBai7_2 = _db.tbl_DM_Nhap_Kho_Raw_Data.Include(x => x.sanpham);
-
-                var viewModelList = listBai7.Join(listBai7_2,
-                    bai7 => bai7.Id,
-                    bai7_2 => bai7_2.Id,
-                    (bai7, bai7_2) => new ViewModelBai7
-                    {
-                        Bai7 = bai7,
-                        Bai7_2 = bai7_2,
-                        TriGia = (decimal)bai7_2.Don_Gia_Nhap * (decimal)bai7_2.SL_Nhap
-                    })
-                    .Where(x => x.Bai7.Ngay_Nhap_Kho >= model.SearchModel.NgayBatDau && x.Bai7.Ngay_Nhap_Kho <= model.SearchModel.NgayKetThuc)
+                var listBai7_2 = _db.tbl_DM_Nhap_Kho_Raw_Data
+                    .Include(x => x.sanpham)
+                    .Include(x => x.NhapKho)
+                    .Include(x => x.NhapKho.NCC)
+                    .Where(x => x.NhapKho.Ngay_Nhap_Kho >= model.SearchModel.NgayBatDau && x.NhapKho.Ngay_Nhap_Kho <= model.SearchModel.NgayKetThuc)
                     .ToList();
 
-                model.ListSearch = viewModelList; // Cập nhật ListSearch với kết quả tìm kiếm
+                model.ListSearch = listBai7_2; // Cập nhật ListSearch với kết quả tìm kiếm
             }
 
             return View(model); // Trả về view với model đã cập nhật

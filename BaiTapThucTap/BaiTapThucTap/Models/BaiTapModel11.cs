@@ -11,14 +11,14 @@ namespace BaiTapThucTap.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required(ErrorMessage = "Chưa nhập số phiếu kho")]
+        [Required(ErrorMessage = "Chưa nhập số phiếu xuất")]
         public string So_Phieu_Xuat_Kho { get; set; }
         [Required(ErrorMessage = "Vui lòng chọn Kho")]
-        public int Kho_ID { get; set; }
+        public int? Kho_ID { get; set; }
         [ForeignKey("Kho_ID")]
         public virtual BaiTap5 Kho { get; set; }
 
-        [Required(ErrorMessage = "Chưa nhập ngày xuất kho")]
+        [Required(ErrorMessage = "Chưa nhập ngày xuất")]
         [DataType(DataType.Date, ErrorMessage = "sai kiểu dữ liệu datetime")]
         public DateTime Ngay_Xuat_Kho { get; set; }
         public string Ghi_Chu { get; set; }

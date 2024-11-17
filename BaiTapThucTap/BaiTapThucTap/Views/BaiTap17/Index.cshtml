@@ -1,0 +1,70 @@
+﻿@model BaiTapThucTap.Controllers.BaiTap17Controller.CombinedViewModel
+<form asp-action="Index" method="post">
+    <hr />
+    <div class="form-group">
+        <label>Nhập Ngày Bắt Đầu</label>
+        <input asp-for="@Model.SearchModel.NgayBatDau" class="form-control" type="date" />
+        <span asp-validation-for="@Model.SearchModel.NgayBatDau" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Nhập Ngày Kết Thúc</label>
+        <input asp-for="@Model.SearchModel.NgayKetThuc" class="form-control" type="date" />
+        <span asp-validation-for="@Model.SearchModel.NgayKetThuc" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+    <br>
+    <br>
+</form>
+
+@if (Model.ListSearchSP != null && Model.ListSearchSP.Any())
+{
+    <div class="text-center">
+        <h2>Báo cáo Xuất Nhập Tồn</h2>
+    </div>
+    <br>
+    <div id="Search">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Mã Sản Phẩm</th>
+                    <th>Tên Sản Phẩm</th>
+                    <th>Số lượng Đầu Kỳ</th>
+                    <th>Số Lượng Nhập</th>
+                    <th>Số Lượng Xuất</th>
+                    <th>Số Lượng Cuối Kỳ</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var x in Model.ListSearchSP)
+                {
+                    <tr>
+
+                        <td>
+                            @x.Ma_San_Pham
+                        </td>
+                        <td>
+                            @x.Ten_San_Pham
+                        </td>
+
+                        <td>@string.Format("{0:#,##0}", (x.SL_Dau_Ky))</td>
+                        <td>@string.Format("{0:#,##0}", (x.SL_Nhap))</td>
+                        <td>@string.Format("{0:#,##0}", (x.SL_Xuat))</td>
+                        <td>@string.Format("{0:#,##0}", (x.SL_Cuoi_Ky))</td>
+                    </tr>
+                }
+            <tr>
+                <th>Tổng</th>
+                <th></th>
+                <th>@string.Format("{0:#,##0}", Model.ListSearchSP.Sum(x => x.SL_Dau_Ky))</th>
+                <th>@string.Format("{0:#,##0}", Model.ListSearchSP.Sum(x => x.SL_Nhap))</th>
+                <th>@string.Format("{0:#,##0}", Model.ListSearchSP.Sum(x => x.SL_Xuat))</th>
+                <th>@string.Format("{0:#,##0}", Model.ListSearchSP.Sum(x => x.SL_Cuoi_Ky))</th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <h2>Không có dữ liệu tìm kiếm nào.</h2>
+}

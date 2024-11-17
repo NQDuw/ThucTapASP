@@ -1,0 +1,34 @@
+﻿@model ViewModelBai11
+
+
+<form asp-action="AddPhieu" method="post">
+    <h2>Thêm Phiếu Xuất</h2>
+    <hr />
+    <div class="form-group">
+        <label>Số Phiếu Xuất</label>
+        <input asp-for="Bai11.So_Phieu_Xuat_Kho" class="form-control" />
+        <span asp-validation-for="Bai11.So_Phieu_Xuat_Kho" class="text-danger"></span>
+    </div>
+    <div class="form-group pb-2">
+        <label>Kho</label>
+        <select asp-for="Bai11.Kho_ID" asp-items="@ViewBag.KhoList" class="form-control">
+            <option disabled selected>==Chọn Kho==</option>
+        </select>
+        <span asp-validation-for="Bai11.Kho_ID" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Ngày xuất</label>
+        <input asp-for="Bai11.Ngay_Xuat_Kho" class="form-control" />
+        <span asp-validation-for="Bai11.Ngay_Xuat_Kho" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Ghi Chú</label>
+        <input asp-for="Bai11.Ghi_Chu" class="form-control" />
+        <span asp-validation-for="Bai11.Ghi_Chu" class="text-danger"></span>
+    </div>
+    
+    <div class=" text-right">
+        <button type="submit" class="btn btn-primary"> Save </button>
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</form>

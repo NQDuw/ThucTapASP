@@ -9,47 +9,89 @@
 </div>
 <br>
 <div>
-    <h5>Số Phiếu Nhập: @(Model.BaiTap9Model.Bai7?.So_Phieu_Nhap_Kho ?? "N/A")</h5>
-    <h5>Mã Sản Phẩm : @Model.BaiTap9Model.Bai7_2.sanpham.Ma_San_Pham</h5>
-    <h5>Tên Sản Phẩm : @Model.BaiTap9Model.Bai7_2.sanpham.Ten_San_Pham</h5>
-    <h5>Số Lượng Nhập: @string.Format("{0:#,##0}", Model.BaiTap9Model.Bai7_2.SL_Nhap) </h5>
-    <h5>Đơn Giá: @string.Format("{0:#,##0}", Model.BaiTap9Model.Bai7_2.Don_Gia_Nhap) </h5>
-    <h5>Trị Giá : @string.Format("{0:#,##0}", Model.BaiTap9Model.TriGia)</h5>
+    <h5>Số Phiếu Nhập: @(Model.BaiTap9Model?.Bai7?.So_Phieu_Nhap_Kho ?? "N/A")</h5>
     <h5>Ngày Nhập: @(Model.BaiTap9Model.Bai7?.Ngay_Nhap_Kho.ToShortDateString() ?? "N/A")</h5>
     <h5>Kho: @(Model.BaiTap9Model.Bai7?.Kho?.Ten_Kho ?? "N/A")</h5>
     <h5>Nhà Cung Cấp: @(Model.BaiTap9Model.Bai7?.NCC?.Ten_NCC ?? "N/A")</h5>
     <h5>Ghi Chú: @(Model.BaiTap9Model.Bai7?.Ghi_Chu ?? "N/A")</h5>
-    <br>
-    <a asp-controller="BaiTap7" asp-action="Add" class="btn btn-primary">
-        <i class="bi bi-plus-circle-fill"></i> Add New
-    </a>
-    <a asp-controller="BaiTap7" asp-action="Delete" asp-route-bai7Id="@Model.BaiTap9Model.Bai7.Id" asp-route-bai7_2Id="@Model.BaiTap9Model.Bai7_2.Id" class="btn btn-danger">Delete</a>
-    <a asp-controller="BaiTap8" asp-action="Edit" asp-route-bai7Id="@Model.BaiTap9Model.Bai7.Id" asp-route-bai7_2Id="@Model.BaiTap9Model.Bai7_2.Id" class="btn btn-warning">Edit </a>
+
+    <h5>Sản phẩm: </h5>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Mã Sản Phẩm</th>
+                <th>Tên Sản Phẩm</th>
+                <th>Số Lượng Nhập</th>
+                <th>Đơn Giá</th>
+                <th>Thành Tiền</th>
+                <th> Action </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model.BaiTap9Model?.Bai7_2 ?? new List<BaiTap7_2>())
+            {
+                <tr>
+                    <td> @(item?.sanpham?.Ma_San_Pham ?? "Chưa có sản phẩm")</td>
+                    <td> @(item?.sanpham?.Ten_San_Pham ?? "Chưa có sản phẩm")</td>
+                    <td> @(string.Format("{0:#,##0}", item?.SL_Nhap ?? 0))</td>
+                    <td> @string.Format("{0:#,##0}", item?.Don_Gia_Nhap ?? 0)</td>
+                    <td> @string.Format("{0:#,##0}", (item?.SL_Nhap ?? 0) * (item?.Don_Gia_Nhap ?? 0))</td>
+                    <th>
+                        <a asp-action="Delete" asp-route-bai7Id="@Model.BaiTap9Model.Bai7.Id" asp-route-IdSP="@item.Id"class="btn btn-danger">Delete</a>
+                        <a asp-action="Edit" asp-route-bai7Id="@Model.BaiTap9Model.Bai7.Id"  asp-route-IdSP="@item.Id" class="btn btn-primary">Edit </a>
+                    </th>
+
+                </tr>
+            }
+            <tr>
+                <td> Tổng</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td>
+                    @string.Format("{0:#,##0}", Model.BaiTap9Model?.TriGia ?? 0)
+                </td>
+                <td> </td>
+            </tr>
+
+        </tbody>
+    </table>
 </div>
+
+
 <br>
+<a asp-action="Add" asp-route-bai7Id="@Model.BaiTap9Model.Bai7.Id" class="btn btn-success">
+    <i class="bi bi-plus-circle-fill"></i> Thêm sản phẩm
+</a>
+<a asp-controller="BaiTap7" asp-action="Index" class="btn btn-secondary">
+    <i class="bi bi-plus-circle-fill"></i> Back To List
+</a>
+<br>
+<br>
+<div class="text-center"> <h1> list Phiếu Nhập</h1></div>
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th>Mã Sản Phẩm</th>
-            <th>Sản Phẩm</th>
-            <th>Số Lượng</th>
-            <th>Đơn Giá</th>
-            <th>Trị Giá</th>
-            <th>Action</th>
-
+            <th>Số Phiếu Nhập</th>
+            <th>Ngày Nhập Kho</th>
+            <th>Kho</th>
+            <th>Nhà Cung Cắp</th>
+            <th>Ghi Chú</th>
+            <th> Action </th>
         </tr>
     </thead>
     <tbody>
         @foreach (var x in Model.ViewModelList)
         {
             <tr>
-                <td>@(x.Bai7_2?.sanpham?.Ma_San_Pham ?? "N/A")</td>
-                <td>@(x.Bai7_2?.sanpham?.Ten_San_Pham ?? "N/A")</td>
-                <td>@string.Format("{0:#,##0}", (x.Bai7_2?.SL_Nhap ?? 0))</td>
-                <td>@string.Format("{0:#,##0}", (x.Bai7_2?.Don_Gia_Nhap ?? 0))</td>
-                <td>@string.Format("{0:#,##0}", (x.TriGia))</td>
+                <td>@(x.So_Phieu_Nhap_Kho ?? "N/A")</td>
+                <td>@(x.Ngay_Nhap_Kho.ToShortDateString() ?? "N/A")</td>
+                <td>@(x.Kho?.Ten_Kho ?? "N/A")</td>
+                <td>@(x.NCC?.Ten_NCC ?? "N/A")</td>
+                <td>@(x.Ghi_Chu ?? "N/A")</td>
                 <td>
-                    <a asp-action="Index" asp-route-bai7Id="@x.Bai7.Id" asp-route-bai7_2Id="@x.Bai7_2.Id" class="btn btn-warning">Chi Tiết </a>
+                    <a asp-action="Index" asp-route-bai7Id="@x.Id" class="btn btn-warning">Chi Tiết </a>
                 </td>
             </tr>
         }

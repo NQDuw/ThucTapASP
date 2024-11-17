@@ -1,25 +1,18 @@
 ﻿@model ViewModelBai11
 
-@if (User.IsInRole(SD.Role_Admin))
-{
-    <form asp-action="DeleteConfirmed" method="post">
-        <h2>Xác nhận xóa</h2>
-        <hr />
-        <div class="form-group">
-            <label>Số Phiếu Xuất</label>
-            <input asp-for="Bai11.So_Phieu_Xuat_Kho" disabled class="form-control" />
-        </div>
-        <div class="form-group">
-            <label>Ghi Chú</label>
-            <input asp-for="Bai11.Ghi_Chu" disabled class="form-control" />
-        </div>
-        <input type="hidden" name="bai11Id" value="@Model.Bai11.Id" />
-        <input type="hidden" name="bai11_2Id" value="@Model.Bai11_2.Id" />
-        <button type="submit" class="btn btn-danger"> Delete </button>
-        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-    </form>
-}
-else
-{
-    <h2>Bạn không có quyền truy cập vào trang này.</h2>
-}
+
+<form asp-action="DeleteConfirmed" method="post">
+    <h2>Xác nhận xóa</h2>
+    <hr />
+    <div class="form-group">
+        <label>Số Phiếu xuất</label>
+        <input asp-for="Bai11.So_Phieu_Xuat_Kho" disabled class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Ghi Chú</label>
+        <input asp-for="Bai11.Ghi_Chu" disabled class="form-control" />
+    </div>
+    <input type="hidden" name="Id" value="@Model.Bai11.Id" />
+    <button type="submit" class="btn btn-danger"> Delete </button>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>

@@ -1,55 +1,47 @@
 ﻿@model ViewModelBai11
 
-@if (User.IsInRole(SD.Role_Admin))
-{
-<form asp-action="Add" method="post">
+
+<form asp-action="Add" asp-route-bai11Id="@ViewBag.Bai11Id" method="post">
     <h2>Thêm Sản Phẩm</h2>
-    <hr />
     <div class="form-group">
-        <label>Số Phiếu Xuất Kho</label>
-        <input asp-for="Bai11.So_Phieu_Xuat_Kho" class="form-control" />
+        <label>Số Phiếu xuất</label>
+        <input asp-for="Bai11.So_Phieu_Xuat_Kho" class="form-control" readonly />
         <span asp-validation-for="Bai11.So_Phieu_Xuat_Kho" class="text-danger"></span>
+    </div>
+    <div class="form-group pb-2">
+        <label>Kho</label>
+        <input asp-for="Bai11.Kho_ID" class="form-control" readonly />
+        <span asp-validation-for="Bai11.Kho_ID" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Ngày xuất</label>
+        <input asp-for="Bai11.Ngay_Xuat_Kho" class="form-control" readonly />
+        <span asp-validation-for="Bai11.Ngay_Xuat_Kho" class="text-danger"></span>
     </div>
     <div class="form-group pb-2">
         <label>Sản Phẩm</label>
         <select asp-for="Bai11_2.San_Pham_ID" asp-items="@ViewBag.SPList" class="form-control">
-            <option disabled selected>==Chọn Kho==</option>
+            <option disabled selected>==Chọn loại sản phẩm==</option>
         </select>
-        <span asp-validation-for="Bai11.Kho_ID" class="text-danger"></span>
+        <span asp-validation-for="Bai11_2.San_Pham_ID" class="text-danger"></span>
     </div>
-    <div class="form-group pb-2">
-        <label>Kho</label>
-        <select asp-for="Bai11.Kho_ID" asp-items="@ViewBag.KhoList" class="form-control">
-            <option disabled selected>==Chọn Kho==</option>
-        </select>
-        <span asp-validation-for="Bai11.Kho_ID" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label>Ngày Nhập</label>
-        <input asp-for="Bai11.Ngay_Xuat_Kho" class="form-control" />
-        <span asp-validation-for="Bai11.Ngay_Xuat_Kho" class="text-danger"></span>
-    </div>
-
     <div class="form-group">
         <label>Số Lượng</label>
         <input asp-for="Bai11_2.SL_Xuat" class="form-control" />
         <span asp-validation-for="Bai11_2.SL_Xuat" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label>Đơn giá</label>
+        <label>Đơn Giá</label>
         <input asp-for="Bai11_2.Don_Gia_Xuat" class="form-control" />
         <span asp-validation-for="Bai11_2.Don_Gia_Xuat" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label>Ghi Chú</label>
-        <input asp-for="Bai11.Ghi_Chu" class="form-control" />
+        <input asp-for="Bai11.Ghi_Chu" class="form-control" readonly/>
         <span asp-validation-for="Bai11.Ghi_Chu" class="text-danger"></span>
     </div>
+    <!-- Gửi lại bai7Id dưới dạng trường hidden -->
+    <input type="hidden" name="bai11Id" value="@ViewBag.Bai11Id" />
     <button type="submit" class="btn btn-primary"> Save </button>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    <a asp-action="Index" asp-route-bai11Id="@ViewBag.Bai11Id" class="btn btn-secondary">Back to List</a>
 </form>
-}
-else
-{
-    <h2>Bạn không có quyền truy cập vào trang này.</h2>
-}

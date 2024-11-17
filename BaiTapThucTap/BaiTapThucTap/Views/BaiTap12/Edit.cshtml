@@ -1,14 +1,11 @@
 ﻿@model BaiTapModel12
 
 
-@if (User.IsInRole(SD.Role_Admin))
-{
 <form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
-    <h2>Hiệu Chỉnh Sản Phẩm</h2>
+    <h2>Hiệu Chỉnh Phiếu Xuất</h2>
     <hr />
     <div class="form-group">
-        <label>Số Phiếu Xuất Kho</label>
+        <label>Số Phiếu xuất Kho</label>
         <input asp-for="Bai11.So_Phieu_Xuat_Kho" class="form-control" readonly/>
         <span asp-validation-for="Bai11.So_Phieu_Xuat_Kho" class="text-danger"></span>
     </div>
@@ -20,26 +17,9 @@
         <span asp-validation-for="Bai11.Kho_ID" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label>Ngày Xuất</label>
+        <label>Ngày Nhập</label>
         <input asp-for="Bai11.Ngay_Xuat_Kho" class="form-control" />
         <span asp-validation-for="Bai11.Ngay_Xuat_Kho" class="text-danger"></span>
-    </div>
-    <div class="form-group pb-2">
-        <label> Sản Phẩm</label>
-        <select asp-for="Bai11_2.San_Pham_ID" asp-items="@ViewBag.SPList" class="form-control">
-            <option disabled selected>==Chọn loại sản phẩm==</option>
-        </select>
-        <span asp-validation-for="Bai11_2.San_Pham_ID" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label>Số Lượng</label>
-        <input asp-for="Bai11_2.SL_Xuat" class="form-control" />
-        <span asp-validation-for="Bai11_2.SL_Xuat" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label>Đơn giá</label>
-        <input asp-for="Bai11_2.Don_Gia_Xuat" class="form-control" />
-        <span asp-validation-for="Bai11_2.Don_Gia_Xuat" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label>Ghi Chú</label>
@@ -47,13 +27,6 @@
         <span asp-validation-for="Bai11.Ghi_Chu" class="text-danger"></span>
     </div>
     <input type="hidden" name="bai11Id" value="@Model.Bai11.Id" />
-    <input type="hidden" name="bai11_2Id" value="@Model.Bai11_2.Id" />
-
-    <button type="submit" class="btn btn-primary"> Edit </button>
+    <button  type="submit" class="btn btn-primary"> Edit </button>
     <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </form>
-}
-else
-{
-    <h2>Bạn không có quyền truy cập vào trang này.</h2>
-}

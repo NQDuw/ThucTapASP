@@ -1,7 +1,7 @@
 ﻿@model BaiTap3
 
-@if (User.IsInRole(SD.Role_Admin))
-{
+<partial name="_Notification" />
+
 <form asp-action="Update" method="post" enctype="multipart/form-data">
     <h2>Cập Nhật Sản Phẩm</h2>
     <hr />
@@ -38,8 +38,3 @@
     <button type="submit" class="btn btn-primary"> Update </button>
     <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </form>
-}
-else
-{
-    <h2>Bạn không có quyền truy cập vào trang này.</h2>
-}

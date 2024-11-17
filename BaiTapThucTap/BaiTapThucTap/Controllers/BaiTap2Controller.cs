@@ -1,5 +1,6 @@
 ﻿using BaiTapThucTap.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace BaiTapThucTap.Controllers
         }
         public IActionResult Index()
         {
-            var listLoaiSanPham = _db.tbl_DM_Loai_San_Pham.ToList();
+            var listLoaiSanPham = _db.tbl_DM_Loai_San_Pham.Where(x => x.Id != 1).ToList();
             return View(listLoaiSanPham);
         }
         public IActionResult Add()
@@ -155,6 +156,13 @@ namespace BaiTapThucTap.Controllers
             if (lsp == null)
             {
                 return NotFound();
+            }
+            // Cập nhật các sản phẩm có khóa ngoại Don_Vi_Tin_ID trỏ đến đơn vị tính này
+            var sanPhamList = _db.tbl_DM_San_Pham.Where(sp => sp.Loai_San_Pham_ID == id).ToList();
+
+            foreach (var sp in sanPhamList)
+            {
+                sp.Loai_San_Pham_ID = 1;
             }
             _db.tbl_DM_Loai_San_Pham.Remove(lsp);
             _db.SaveChanges();

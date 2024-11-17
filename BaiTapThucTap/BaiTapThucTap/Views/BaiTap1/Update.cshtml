@@ -1,11 +1,10 @@
 ﻿@model BaiTap1
-@if (User.IsInRole(SD.Role_Admin))
-    {
+
         <form asp-action="Update" method="post">
-            <h2>Sửa Kho</h2>
+            <h2>Sửa Đơn Vị Tính</h2>
             <hr />
             <div class="form-group">
-                <label>Tên Kho</label>
+                <label>Tên Đơn vị tính</label>
                 <input asp-for="Ten_Don_Vi_Tinh" class="form-control" />
                 <span asp-validation-for="Ten_Don_Vi_Tinh" class="text-danger"></span>
             </div>
@@ -17,8 +16,4 @@
             <button type="submit" class="btn btn-primary"> Update </button>
             <a asp-action="Index" class="btn btn-secondary">Back to List</a>
         </form>
-    }
-else
-    {
-        <h2>Bạn không có quyền truy cập vào trang này.</h2>
-    }
+

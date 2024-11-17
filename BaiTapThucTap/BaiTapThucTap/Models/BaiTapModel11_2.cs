@@ -24,7 +24,7 @@ namespace BaiTapThucTap.Models
         [Required(ErrorMessage = "Chưa nhập số lượng Xuất")]
         public int SL_Xuat { get; set; }
 
-        [Required(ErrorMessage = "Chưa nhập ngày xuất kho")]
+        [Required(ErrorMessage = "Chưa nhập đơn giá xuất kho")]
         public int Don_Gia_Xuat { get; set; }
     }
 }

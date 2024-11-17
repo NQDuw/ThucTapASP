@@ -1,46 +1,68 @@
-﻿@model List<BaiTap8>
+﻿@model List<BaiTap7>
 <partial name="_Notification" />
-
+<h2>LIST nhập kho</h2>
 <div class="row">
-    <div class="col-md-6">
-        <h2>LIST nhập kho</h2>
-
-    </div>
+        <div class="col-md-6">
+            <select id="KhoSelect" asp-items="@ViewBag.KhoList" class="form-control" onchange="ChonKho()">
+                <!-- Chọn Kho là lựa chọn mặc định -->
+                <option selected>==Chọn Kho==</option>
+            </select>
+        </div>
     <div class="col-md-6 text-right">
         <a class="btn btn-success" asp-area="" asp-controller="BaiTap7" asp-action="Index">Back</a>
         <br>
     </div>
 </div>
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Số Phiếu Nhập</th>
-            <th>Sản Phẩm</th>
-            <th>Số Lượng</th>
-            <th>Đơn Giá</th>
-            <th>Ngày Nhập Kho</th>
-            <th>Kho</th>
-            <th>Nhà Cung Cắp</th>
-            <th>Ghi Chú</th>
-            <th> Action </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var x in Model)
-        {
-        <tr>
-            <td>@(x.Bai7?.So_Phieu_Nhap_Kho ?? "N/A")</td>
-            <td>@(x.Bai7_2?.sanpham?.Ten_San_Pham ?? "N/A")</td>
-            <td>@string.Format("{0:#,##0}", (x.Bai7_2?.SL_Nhap ?? 0))</td>
-            <td>@string.Format("{0:#,##0}", (x.Bai7_2?.Don_Gia_Nhap ?? 0))</td>
-            <td>@(x.Bai7?.Ngay_Nhap_Kho.ToShortDateString() ?? "N/A")</td>
-            <td>@(x.Bai7?.Kho?.Ten_Kho ?? "N/A")</td>
-            <td>@(x.Bai7?.NCC?.Ten_NCC ?? "N/A")</td>
-            <td>@(x.Bai7?.Ghi_Chu ?? "N/A")</td>
-            <td>
-                <a asp-action="Edit" asp-route-bai7Id="@x.Bai7.Id" asp-route-bai7_2Id="@x.Bai7_2.Id" class="btn btn-danger"> Edit</a>
-                <a asp-controller="BaiTap9" asp-route-bai7Id="@x.Bai7.Id" asp-route-bai7_2Id="@x.Bai7_2.Id" class="btn btn-warning">Chi Tiết </a>
-            </td>
-        </tr>}
-    </tbody>
-</table>
+<hr />
+<div id="KhoTable">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Số Phiếu Nhập</th>
+                <th>Ngày Nhập Kho</th>
+                <th>Kho</th>
+                <th>Nhà Cung Cắp</th>
+                <th>Ghi Chú</th>
+                <th> Action </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var x in Model)
+            {
+                <tr>
+                    <td>@(x.So_Phieu_Nhap_Kho ?? "N/A")</td>
+                    <td>@(x.Ngay_Nhap_Kho.ToShortDateString() ?? "N/A")</td>
+                    <td>@(x.Kho?.Ten_Kho ?? "N/A")</td>
+                    <td>@(x.NCC?.Ten_NCC ?? "N/A")</td>
+                    <td>@(x.Ghi_Chu ?? "N/A")</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-bai7Id="@x.Id" class="btn btn-danger"> Edit</a>
+                        <a asp-controller="BaiTap9" asp-route-bai7Id="@x.Id" class="btn btn-warning">Chi Tiết </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    function ChonKho() {
+        var khoId = $('#KhoSelect').val();  // Lấy giá trị kho đã chọn
+        if (khoId) {
+            $.ajax({
+                url: '/BaiTap8/GetListKhoByKho',  // URL của action trong controller
+                type: 'GET',
+                data: { khoId: khoId },  // Truyền khoId vào yêu cầu
+                success: function (data) {
+                    console.log("Dữ liệu nhận được: ", data);
+
+                    // Cập nhật lại bảng với dữ liệu trả về
+                    $('#KhoTable').html(data);
+                },
+                error: function () {
+                    console.log("Có lỗi xảy ra: ", status, error);
+                    alert('Có lỗi xảy ra khi tải dữ liệu!');
+                }
+            });
+        }
+    }
+</script>

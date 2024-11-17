@@ -32,22 +32,37 @@
                     <th>Tên Sản Phẩm</th>
                     <th>Số Lượng</th>
                     <th>Đơn Giá</th>
+                    <th>Ghi Chú</th>
                     <th>Trị Giá</th>
+
                 </tr>
             </thead>
             <tbody>
                 @foreach (var x in Model.ListSearch)
                 {
-                    <tr>
-                        <td>@(x.Bai11?.Ngay_Xuat_Kho)</td>
-                        <td>@(x.Bai11?.So_Phieu_Xuat_Kho)</td>
-                        <td>@(x.Bai11_2?.sanpham?.Ma_San_Pham ?? "N/A")</td>
-                        <td>@(x.Bai11_2?.sanpham?.Ten_San_Pham ?? "N/A")</td>
-                        <td>@string.Format("{0:#,##0}", (x.Bai11_2?.SL_Xuat ?? 0))</td>
-                        <td>@string.Format("{0:#,##0}", (x.Bai11_2?.Don_Gia_Xuat ?? 0))</td>
-                        <td>@string.Format("{0:#,##0}", (x.TriGia))</td>
-                    </tr>
+                <tr>
+                    <td>@(x.XuatKho?.Ngay_Xuat_Kho)</td>
+                    <td>@(x.XuatKho?.So_Phieu_Xuat_Kho)</td>
+                    <td>@(x?.sanpham?.Ma_San_Pham ?? "N/A")</td>
+                    <td>@(x?.sanpham?.Ten_San_Pham ?? "N/A")</td>
+                    <td>@string.Format("{0:#,##0}", (x?.SL_Xuat ?? 0))</td>
+                    <td>@string.Format("{0:#,##0}", (x?.Don_Gia_Xuat ?? 0))</td>
+                    <td>@(x.XuatKho?.Ghi_Chu)</td>
+
+                    <td>@string.Format("{0:#,##0}", (x?.SL_Xuat ?? 0) * (x?.Don_Gia_Xuat ?? 0))</td>
+                </tr>
                 }
+            <tr>
+                <td>Tổng</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>@string.Format("{0:#,##0}", Model.ListSearch.Sum(x => x.SL_Xuat))</td>
+                <td></td>
+                <td></td>
+
+                <td>@string.Format("{0:#,##0}", Model.ListSearch.Sum(x => (x?.SL_Xuat ?? 0) * (x?.Don_Gia_Xuat ?? 0)))</td>
+            </tr>
             </tbody>
         </table>
     </div>

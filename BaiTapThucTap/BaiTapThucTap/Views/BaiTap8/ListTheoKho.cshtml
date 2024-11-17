@@ -1,0 +1,30 @@
+﻿@model List<BaiTap7>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Số Phiếu Nhập</th>
+            <th>Ngày Nhập Kho</th>
+            <th>Kho</th>
+            <th>Nhà Cung Cắp</th>
+            <th>Ghi Chú</th>
+            <th> Action </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var x in Model)
+        {
+            <tr>
+                <td>@(x.So_Phieu_Nhap_Kho ?? "N/A")</td>
+                <td>@(x.Ngay_Nhap_Kho.ToShortDateString() ?? "N/A")</td>
+                <td>@(x.Kho?.Ten_Kho ?? "N/A")</td>
+                <td>@(x.NCC?.Ten_NCC ?? "N/A")</td>
+                <td>@(x.Ghi_Chu ?? "N/A")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-bai7Id="@x.Id" class="btn btn-danger"> Edit</a>
+                    <a asp-controller="BaiTap9" asp-action="Index" asp-route-bai7Id="@x.Id" class="btn btn-warning">Chi Tiết </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -11,13 +11,15 @@ namespace BaiTapThucTap.Models
     public class BaiTap6
     {
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; }
+        [Required(ErrorMessage = "User không được để trống.")]
         public string Ma_Dang_Nhap { get; set; } 
         [ForeignKey("Ma_Dang_Nhap")]
-        [Required(ErrorMessage = "Kho Id không được để trống.")]
-        public int Kho_ID { set; get; }
-        [ForeignKey("Kho_ID")]
-        public virtual BaiTap5 Kho { set; get; }
+        public ApplicationUser User { set; get; }
 
+        [Required(ErrorMessage = "Kho Id không được để trống.")]
+        public int? Kho_ID { set; get; }
+        [ForeignKey("Kho_ID")]
+        public BaiTap5 Kho { set; get; }
     }
 }

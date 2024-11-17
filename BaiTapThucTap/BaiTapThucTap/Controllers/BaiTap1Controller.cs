@@ -1,5 +1,6 @@
 ﻿using BaiTapThucTap.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace BaiTapThucTap.Controllers
         }
         public IActionResult Index()
         {
-            var listDVT = _db.tbl_DM_Don_Vi_Tinh.ToList();
+            var listDVT = _db.tbl_DM_Don_Vi_Tinh.Where(x=>x.Id!=1).ToList();
             return View(listDVT);
         }
         public IActionResult Add()
@@ -29,16 +30,16 @@ namespace BaiTapThucTap.Controllers
         {
             if (string.IsNullOrWhiteSpace(danhmuc.Ten_Don_Vi_Tinh))
             {
-                ModelState.AddModelError("Ten_DVT", "Tên Đơn Vị Tính không được để trống.");
+                ModelState.AddModelError("Ten_Don_Vi_Tinh", "Tên Đơn Vị Tính không được để trống.");
             }
             else
             {
-                var ktten = _db.tbl_DM_Don_Vi_Tinh
+                var ktrMa = _db.tbl_DM_Don_Vi_Tinh
                               .FirstOrDefault(d => d.Ten_Don_Vi_Tinh.Trim().ToLower() == danhmuc.Ten_Don_Vi_Tinh.Trim().ToLower());
 
-                if (ktten != null)
+                if (ktrMa != null)
                 {
-                    ModelState.AddModelError("Ten_Don_Vi_Tinh", "Tên đơn vị tính đã tồn tại.");
+                    ModelState.AddModelError("Ten_Don_Vi_Tinh", "Tên Đơn Vị Tính đã tồn tại.");
                 }
             }
 
@@ -49,8 +50,6 @@ namespace BaiTapThucTap.Controllers
                 TempData["success"] = "Thêm Thành Công";
                 return RedirectToAction("Index");
             }
-
-
             return View(danhmuc);
         }
 
@@ -70,18 +69,18 @@ namespace BaiTapThucTap.Controllers
 
             if (string.IsNullOrWhiteSpace(dvt.Ten_Don_Vi_Tinh))
             {
-                ModelState.AddModelError("Ten_Don_Vi_Tinh", "Tên đơn vị tính không được để trống.");
+                ModelState.AddModelError("Ten_Don_Vi_Tinh", "Tên Đơn Vị Tính không được để trống.");
             }
             else
             {
                 var oldTen = existingKho.Ten_Don_Vi_Tinh;
-                var ktrTenTrung = _db.tbl_DM_Don_Vi_Tinh
+                var ktrMaTrung = _db.tbl_DM_Don_Vi_Tinh
                              .FirstOrDefault(d => d.Ten_Don_Vi_Tinh.Trim().ToLower() == dvt.Ten_Don_Vi_Tinh.Trim().ToLower());
                 if (dvt.Ten_Don_Vi_Tinh != oldTen)
                 {
-                    if (ktrTenTrung != null)
+                    if (ktrMaTrung != null)
                     {
-                        ModelState.AddModelError("Ten_DVT", "Tên Đơn vị tính đã tồn tại.");
+                        ModelState.AddModelError("Ten_Don_Vi_Tinh", "Tên đơn vị tính đã tồn tại.");
                     }
                     else
                     {
@@ -111,10 +110,21 @@ namespace BaiTapThucTap.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
             var dvt = _db.tbl_DM_Don_Vi_Tinh.Find(id);
+           
             if (dvt == null)
             {
                 return NotFound();
             }
+            // Cập nhật các sản phẩm có khóa ngoại Don_Vi_Tin_ID trỏ đến đơn vị tính này
+            var sanPhamList = _db.tbl_DM_San_Pham.Where(sp => sp.Don_Vi_Tin_ID == id).ToList();
+
+            foreach (var sp in sanPhamList)
+            {
+                sp.Don_Vi_Tin_ID = 1; 
+            }
+
+            // Lưu thay đổi vào cơ sở dữ liệu
+            _db.SaveChanges();
             _db.tbl_DM_Don_Vi_Tinh.Remove(dvt);
             _db.SaveChanges();
             TempData["success"] = "Xóa Thành Công";

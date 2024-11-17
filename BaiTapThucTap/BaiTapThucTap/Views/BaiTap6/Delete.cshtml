@@ -1,0 +1,23 @@
+﻿@model BaiTap6
+
+@if (User.IsInRole("Admin"))
+{
+    <form asp-action="DeleteConfirmed" asp-route-Id="@Model.Id" method="post">
+        <h2>Xác nhận xóa</h2>
+        <hr />
+        <div class="form-group">
+            <label>User</label>
+            <input asp-for="User.Email" disabled class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>kho</label>
+            <input asp-for="Kho.Ten_Kho" disabled class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-danger"> Delete </button>
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </form>
+}
+else
+{
+    <h1>Không có quyền truy cập</h1>
+}
